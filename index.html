@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Photo Resizer & PDF Converter</title>
+    <!-- jsPDF library for converting Image to PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #4f46e5;
+            font-size: 24px;
+        }
+
+        .tagline {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #4f46e5;
+        }
+
+        .upload-area p {
+            color: #64748b;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Editor Section (Hidden initially) */
+        .editor-section {
+            display: none;
+        }
+
+        .preview-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #preview-img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Controls styling */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #475569;
+        }
+
+        .control-group input, .control-group select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            border-color: #4f46e5;
+        }
+
+        .quality-wrapper {
+            grid-column: span 2;
+        }
+
+        .quality-slider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quality-slider input {
+            flex-grow: 1;
+        }
+
+        #quality-val {
+            font-weight: bold;
+            color: #4f46e5;
+            min-width: 85px;
+            text-align: right;
+        }
+
+        /* Action Buttons Area */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .btn-success {
+            background-color: #10b981;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #475569;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* File Info */
+        .file-info {
+            font-size: 13px;
+            color: #475569;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📷 Photo Resizer & PDF Converter</h1>
+    <p class="tagline">Resize photo, Compress KB, & Convert Image to PDF in 1-Click</p>
+
+    <!-- Upload Box -->
+    <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <svg width="48" height="48" fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24" style="margin: 0 auto;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+        </svg>
+        <p>Apni Photo select karein ya yahan drag karein</p>
+        <input type="file" id="file-input" accept="image/*">
+    </div>
+
+    <!-- Editor Section -->
+    <div class="editor-section" id="editor-section">
+        <div class="preview-container">
+            <img id="preview-img" alt="Preview Image">
+            <div class="file-info" id="original-info">Original Size: -</div>
+        </div>
+
+        <div class="controls">
+            <!-- Width -->
+            <div class="control-group">
+                <label for="width-input">Width (Pixels)</label>
+                <input type="number" id="width-input">
+            </div>
+
+            <!-- Height -->
+            <div class="control-group">
+                <label for="height-input">Height (Pixels)</label>
+                <input type="number" id="height-input">
+            </div>
+
+            <!-- Aspect Ratio Lock -->
+            <div class="control-group" style="grid-column: span 2; flex-direction: row; align-items: center; gap: 8px;">
+                <input type="checkbox" id="aspect-ratio" checked>
+                <label for="aspect-ratio" style="margin-bottom: 0; cursor: pointer; font-size: 13px;">Maintain Aspect Ratio (Proportion banaye rakhein)</label>
+            </div>
+
+            <!-- Format -->
+            <div class="control-group">
+                <label for="format-input">Output Format</label>
+                <select id="format-input">
+                    <option value="image/jpeg">JPEG (Best for compression)</option>
+                    <option value="image/png">PNG (No Loss / Clear background)</option>
+                    <option value="image/webp">WebP (Modern & Small size)</option>
+                </select>
+            </div>
+
+            <!-- Quality/Compression with Live KB -->
+            <div class="control-group quality-wrapper">
+                <label for="quality-input">File Size Adjust (Ghatayein/Badhayein)</label>
+                <div class="quality-slider">
+                    <input type="range" id="quality-input" min="5" max="100" value="80">
+                    <span id="quality-val">~ 0 KB</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <!-- Button 1: Resize & Download Image -->
+            <button class="btn btn-primary" id="download-btn">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Resize & Download Image
+            </button>
+
+            <hr>
+
+            <!-- Button 2: Convert to PDF -->
+            <button class="btn btn-success" id="pdf-btn">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                Download as PDF
+            </button>
+        </div>
+
+        <button class="btn btn-secondary" onclick="resetPage()">Doosri Photo Upload Karein</button>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file-input');
+    const dropZone = document.getElementById('drop-zone');
+    const editorSection = document.getElementById('editor-section');
+    const previewImg = document.getElementById('preview-img');
+    const originalInfo = document.getElementById('original-info');
+    
+    const widthInput = document.getElementById('width-input');
+    const heightInput = document.getElementById('height-input');
+    const aspectRatioLock = document.getElementById('aspect-ratio');
+    const formatInput = document.getElementById('format-input');
+    const qualityInput = document.getElementById('quality-input');
+    const qualityVal = document.getElementById('quality-val');
+    const downloadBtn = document.getElementById('download-btn');
+    const pdfBtn = document.getElementById('pdf-btn');
+
+    let originalImage = new Image();
+    let originalAspectRatio = 1;
+
+    // Handle File Upload
+    fileInput.addEventListener('change', handleFile);
+    
+    // Drag & Drop events
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#4f46e5'; });
+    dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = '#cbd5e1'; });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        handleFile();
+    });
+
+    function handleFile() {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const sizeKB = (file.size / 1024).toFixed(1);
+        originalInfo.innerText = `Original Size: ${sizeKB} KB`;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            originalImage.src = e.target.result;
+            originalImage.onload = function() {
+                previewImg.src = originalImage.src;
+                
+                widthInput.value = originalImage.width;
+                heightInput.value = originalImage.height;
+                originalAspectRatio = originalImage.width / originalImage.height;
+
+                dropZone.style.display = 'none';
+                editorSection.style.display = 'block';
+
+                updateEstimatedSize();
+            }
+        }
+        reader.readAsDataURL(file);
+    }
+
+    // Aspect ratio locking
+    widthInput.addEventListener('input', () => {
+        if (aspectRatioLock.checked) {
+            heightInput.value = Math.round(widthInput.value / originalAspectRatio);
+        }
+        updateEstimatedSize();
+    });
+
+    heightInput.addEventListener('input', () => {
+        if (aspectRatioLock.checked) {
+            widthInput.value = Math.round(heightInput.value * originalAspectRatio);
+        }
+        updateEstimatedSize();
+    });
+
+    formatInput.addEventListener('change', updateEstimatedSize);
+    qualityInput.addEventListener('input', updateEstimatedSize);
+
+    // Live KB Size Calculator
+    function updateEstimatedSize() {
+        if (!originalImage.src) return;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const targetWidth = parseInt(widthInput.value) || originalImage.width;
+        const targetHeight = parseInt(heightInput.value) || originalImage.height;
+
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
+
+        const quality = parseInt(qualityInput.value) / 100;
+        const format = formatInput.value;
+
+        const outputDataUrl = canvas.toDataURL(format, quality);
+        
+        const head = outputDataUrl.split(',')[0];
+        let sizeInBytes = Math.round((outputDataUrl.length - head.length - 1) * 3 / 4);
+        
+        if (outputDataUrl.endsWith('==')) sizeInBytes -= 2;
+        else if (outputDataUrl.endsWith('=')) sizeInBytes -= 1;
+
+        const sizeInKB = (sizeInBytes / 1024).toFixed(1);
+        qualityVal.innerText = `~ ${sizeInKB} KB`;
+    }
+
+    // Helper to generate processed image data URL
+    function getProcessedImageData() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const targetWidth = parseInt(widthInput.value) || originalImage.width;
+        const targetHeight = parseInt(heightInput.value) || originalImage.height;
+
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
+
+        const quality = parseInt(qualityInput.value) / 100;
+        const format = formatInput.value;
+
+        return {
+            dataUrl: canvas.toDataURL(format, quality),
+            format: format
+        };
+    }
+
+    // Resize and Download Image Button
+    downloadBtn.addEventListener('click', () => {
+        const { dataUrl, format } = getProcessedImageData();
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        
+        const originalName = fileInput.files[0].name.split('.').slice(0, -1).join('.');
+        const extension = format === 'image/webp' ? 'webp' : (format === 'image/png' ? 'png' : 'jpg');
+        link.download = `${originalName}_resized.${extension}`;
+        
+        link.click();
+    });
+
+    // Convert Image to PDF Button
+    pdfBtn.addEventListener('click', () => {
+        const { dataUrl } = getProcessedImageData();
+        const { jsPDF } = window.jspdf;
+
+        // Create PDF (Portrait, unit: millimeters, size: A4)
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        // Target measurements for canvas image
+        const targetWidth = parseInt(widthInput.value) || originalImage.width;
+        const targetHeight = parseInt(heightInput.value) || originalImage.height;
+        const imgRatio = targetWidth / targetHeight;
+
+        // Image ko A4 size page me perfect fit karne ki calculation
+        let pdfImgWidth = pageWidth - 20; // 10mm margins on sides
+        let pdfImgHeight = pdfImgWidth / imgRatio;
+
+        // Agar image page se lambi ho jaye
+        if (pdfImgHeight > (pageHeight - 20)) {
+            pdfImgHeight = pageHeight - 20;
+            pdfImgWidth = pdfImgHeight * imgRatio;
+        }
+
+        // Center alignment calculations
+        const xOffset = (pageWidth - pdfImgWidth) / 2;
+        const yOffset = (pageHeight - pdfImgHeight) / 2;
+
+        // PDF me image add karein
+        pdf.addImage(dataUrl, 'JPEG', xOffset, yOffset, pdfImgWidth, pdfImgHeight);
+        
+        // Download PDF file
+        const originalName = fileInput.files[0].name.split('.').slice(0, -1).join('.');
+        pdf.save(`${originalName}_document.pdf`);
+    });
+
+    // Reset Page for next upload
+    function resetPage() {
+        fileInput.value = '';
+        dropZone.style.display = 'block';
+        editorSection.style.display = 'none';
+        dropZone.style.borderColor = '#cbd5e1';
+    }
+</script>
+
+</body>
+</html>
