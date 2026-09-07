@@ -5,482 +5,2353 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Photo Resizer & Compressor - Free & Fast</title>
     <meta name="description" content="Resize and compress images for free. Fast online tool to adjust photo size in KB and pixels without quality loss.">
-    <!-- jsPDF library for converting Image to PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f3f4f6;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            max-width: 600px;
-            width: 100%;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #4f46e5;
-            font-size: 24px;
-        }
-
-        .tagline {
-            text-align: center;
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        /* Upload Area */
-        .upload-area {
-            border: 2px dashed #cbd5e1;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.3s;
-            margin-bottom: 20px;
-        }
-
-        .upload-area:hover {
-            border-color: #4f46e5;
-        }
-
-        .upload-area p {
-            color: #64748b;
-            margin-top: 10px;
-            font-size: 15px;
-        }
-
-        #file-input {
-            display: none;
-        }
-
-        /* Editor Section (Hidden initially) */
-        .editor-section {
-            display: none;
-        }
-
-        .preview-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        #preview-img {
-            max-width: 100%;
-            max-height: 250px;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* Controls styling */
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .control-group label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #475569;
-        }
-
-        .control-group input, .control-group select {
-            padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .control-group input:focus, .control-group select:focus {
-            border-color: #4f46e5;
-        }
-
-        .quality-wrapper {
-            grid-column: span 2;
-        }
-
-        .quality-slider {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .quality-slider input {
-            flex-grow: 1;
-        }
-
-        #quality-val {
-            font-weight: bold;
-            color: #4f46e5;
-            min-width: 85px;
-            text-align: right;
-        }
-
-        /* Action Buttons Area */
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: #4f46e5;
-        }
-
-        .btn-primary:hover {
-            background-color: #4338ca;
-        }
-
-        .btn-success {
-            background-color: #10b981;
-        }
-
-        .btn-success:hover {
-            background-color: #059669;
-        }
-
-        .btn-secondary {
-            background-color: #e2e8f0;
-            color: #475569;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover {
-            background-color: #cbd5e1;
-        }
-
-        /* File Info */
-        .file-info {
-            font-size: 13px;
-            color: #475569;
-            font-weight: 500;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid #e2e8f0;
-            margin: 15px 0;
-        }
-    </style>
 </head>
+<style>
+/* =========================================================
+   PIXELRESIZE — PREMIUM PHOTO RESIZER
+   Single-file application
+   HTML + CSS + JavaScript
+   ========================================================= */
+
+:root {
+    --bg: #070a12;
+    --bg-soft: #0d1220;
+    --card: rgba(17, 24, 39, 0.78);
+    --card-2: rgba(23, 31, 49, 0.9);
+    --border: rgba(255,255,255,.09);
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --primary: #7c5cff;
+    --primary-2: #5b8cff;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --shadow: 0 25px 80px rgba(0,0,0,.35);
+    --radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 10% 10%, rgba(124,92,255,.15), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(91,140,255,.12), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(124,92,255,.08), transparent 35%),
+        var(--bg);
+}
+
+/* Background decoration */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .25;
+    background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    width: min(1200px, calc(100% - 32px));
+    margin: auto;
+    padding: 22px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -.5px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    box-shadow: 0 10px 35px rgba(124,92,255,.35);
+}
+
+.logo-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+.badge {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.04);
+    color: #cbd5e1;
+    padding: 8px 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.container {
+    width: min(1200px, calc(100% - 32px));
+    margin: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.hero {
+    text-align: center;
+    padding: 55px 10px 35px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 7vw, 76px);
+    line-height: .98;
+    letter-spacing: -4px;
+    max-width: 850px;
+    margin: auto;
+    font-weight: 900;
+}
+
+.gradient-text {
+    background: linear-gradient(
+        100deg,
+        #ffffff 10%,
+        #a996ff 45%,
+        #72a0ff 80%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 650px;
+    margin: 22px auto 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   APP CARD
+   ========================================================= */
+
+.app {
+    margin: 20px auto 70px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    background: linear-gradient(
+        145deg,
+        rgba(18,25,41,.9),
+        rgba(8,12,22,.88)
+    );
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    backdrop-filter: blur(25px);
+}
+
+.app-top {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aebbd0;
+    font-size: 13px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 14px rgba(34,197,94,.8);
+}
+
+/* =========================================================
+   UPLOAD
+   ========================================================= */
+
+.upload-area {
+    margin: 22px;
+    min-height: 330px;
+    border: 1.5px dashed rgba(255,255,255,.16);
+    border-radius: 24px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    cursor: pointer;
+    transition: .25s ease;
+    background:
+        radial-gradient(circle at center, rgba(124,92,255,.07), transparent 55%),
+        rgba(255,255,255,.015);
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: rgba(124,92,255,.8);
+    background:
+        radial-gradient(circle at center, rgba(124,92,255,.14), transparent 60%),
+        rgba(124,92,255,.04);
+    transform: translateY(-2px);
+}
+
+.upload-icon {
+    width: 75px;
+    height: 75px;
+    margin: auto auto 22px;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background: rgba(124,92,255,.13);
+    border: 1px solid rgba(124,92,255,.25);
+    color: #a996ff;
+}
+
+.upload-icon svg {
+    width: 34px;
+    height: 34px;
+}
+
+.upload-area h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.upload-area p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 22px;
+    padding: 13px 20px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    color: white;
+    font-weight: 750;
+    border: none;
+    box-shadow: 0 12px 30px rgba(124,92,255,.25);
+}
+
+.file-note {
+    margin-top: 14px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+#fileInput {
+    display: none;
+}
+
+/* =========================================================
+   EDITOR
+   ========================================================= */
+
+.editor {
+    display: none;
+    grid-template-columns: 1.1fr .9fr;
+    min-height: 650px;
+}
+
+.preview-panel {
+    padding: 24px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.panel-title h3 {
+    font-size: 15px;
+}
+
+.panel-title span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.preview-box {
+    flex: 1;
+    min-height: 460px;
+    border-radius: 20px;
+    background:
+        linear-gradient(45deg, #161b27 25%, transparent 25%),
+        linear-gradient(-45deg, #161b27 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #161b27 75%),
+        linear-gradient(-45deg, transparent 75%, #161b27 75%);
+    background-size: 30px 30px;
+    background-position: 0 0, 0 15px, 15px -15px, -15px 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+}
+
+#previewImage {
+    max-width: 94%;
+    max-height: 470px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: none;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+}
+
+.preview-placeholder {
+    color: #64748b;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* =========================================================
+   CONTROL PANEL
+   ========================================================= */
+
+.controls {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: 700px;
+}
+
+.control-section {
+    padding-bottom: 23px;
+    margin-bottom: 23px;
+    border-bottom: 1px solid var(--border);
+}
+
+.control-section:last-child {
+    border-bottom: none;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-heading h3 {
+    font-size: 14px;
+}
+
+.section-heading span {
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* dimensions */
+
+.dimension-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.field label {
+    display: block;
+    font-size: 11px;
+    color: #7f8da5;
+    margin-bottom: 7px;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-wrap input,
+select {
+    width: 100%;
+    height: 46px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.035);
+    color: white;
+    border-radius: 12px;
+    padding: 0 13px;
+    outline: none;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.input-wrap input:focus,
+select:focus {
+    border-color: rgba(124,92,255,.7);
+    box-shadow: 0 0 0 3px rgba(124,92,255,.1);
+}
+
+.unit {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+    opacity: .5;
+}
+
+/* ratio */
+
+.ratio-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+}
+
+.ratio-info {
+    color: #aab5c6;
+    font-size: 12px;
+}
+
+.switch {
+    position: relative;
+    width: 43px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    border-radius: 999px;
+    background: #263044;
+    transition: .2s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.switch input:checked + .slider {
+    background: var(--primary);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(19px);
+}
+
+/* presets */
+
+.presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.preset {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.03);
+    color: #aab5c6;
+    border-radius: 10px;
+    padding: 10px 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.preset:hover {
+    border-color: rgba(124,92,255,.5);
+    color: white;
+    background: rgba(124,92,255,.08);
+}
+
+/* slider */
+
+.range-row {
+    display: flex;
+    justify-content: space-between;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.range-value {
+    color: white;
+    font-weight: 700;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* select */
+
+select {
+    appearance: none;
+    cursor: pointer;
+}
+
+/* stats */
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.stat {
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 13px;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* action buttons */
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.btn {
+    min-height: 47px;
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    color: white;
+    background: rgba(255,255,255,.04);
+    cursor: pointer;
+    font-weight: 750;
+    transition: .2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.07);
+}
+
+.btn-primary {
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    box-shadow: 0 12px 30px rgba(124,92,255,.22);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 16px 35px rgba(124,92,255,.3);
+}
+
+.btn-danger:hover {
+    border-color: rgba(239,68,68,.5);
+    color: #fca5a5;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 80px;
+}
+
+.feature {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.025);
+    padding: 22px;
+    border-radius: 18px;
+}
+
+.feature-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: rgba(124,92,255,.1);
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.feature p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.footer {
+    text-align: center;
+    color: #475569;
+    padding: 25px 0 45px;
+    font-size: 12px;
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100;
+    background: #121a2a;
+    border: 1px solid var(--border);
+    padding: 13px 17px;
+    border-radius: 13px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.4);
+    transform: translateY(120px);
+    opacity: 0;
+    transition: .3s;
+    font-size: 13px;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+.loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+    place-items: center;
+    background: rgba(5,8,15,.7);
+    backdrop-filter: blur(8px);
+}
+
+.loader.active {
+    display: grid;
+}
+
+.loader-card {
+    padding: 28px;
+    min-width: 240px;
+    text-align: center;
+    border-radius: 20px;
+    background: #111827;
+    border: 1px solid var(--border);
+}
+
+.spinner {
+    width: 35px;
+    height: 35px;
+    margin: auto auto 15px;
+    border: 3px solid #263044;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .editor {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .controls {
+        max-height: none;
+    }
+
+    .preview-box {
+        min-height: 360px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+}
+
+@media (max-width: 550px) {
+
+    .header {
+        width: min(100% - 22px, 1200px);
+    }
+
+    .container {
+        width: min(100% - 22px, 1200px);
+    }
+
+    .hero {
+        padding-top: 35px;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .app {
+        border-radius: 20px;
+    }
+
+    .upload-area {
+        margin: 12px;
+        min-height: 300px;
+        padding: 25px 15px;
+    }
+
+    .preview-panel,
+    .controls {
+        padding: 15px;
+    }
+
+    .dimension-grid {
+        gap: 8px;
+    }
+
+    .presets {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .badge {
+        display: none;
+    }
+}
+</style>
+</head>
+
 <body>
 
-<div class="container">
-    <h1>📷 Photo Resizer & PDF Converter</h1>
-    <p class="tagline">Resize photo, Compress KB, & Convert Image to PDF in 1-Click</p>
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
 
-    <!-- Upload Box -->
-    <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
-        <svg width="48" height="48" fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24" style="margin: 0 auto;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-        </svg>
-        <p>Apni Photo select karein ya yahan drag karein</p>
-        <input type="file" id="file-input" accept="image/*">
-    </div>
+<header class="header">
 
-    <!-- Editor Section -->
-    <div class="editor-section" id="editor-section">
-        <div class="preview-container">
-            <img id="preview-img" alt="Preview Image">
-            <div class="file-info" id="original-info">Original Size: -</div>
+    <div class="logo">
+
+        <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+                <path d="M4 4h6v6H4z"/>
+                <path d="M14 4h6v6h-6z"/>
+                <path d="M4 14h6v6H4z"/>
+                <path d="M14 14h6v6h-6z"/>
+            </svg>
         </div>
 
-        <div class="controls">
-            <!-- Width -->
-            <div class="control-group">
-                <label for="width-input">Width (Pixels)</label>
-                <input type="number" id="width-input">
+        PixelResize
+
+    </div>
+
+    <div class="badge">
+        100% Browser Based
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="hero">
+
+        <h1>
+            Resize your photos
+            <span class="gradient-text">beautifully.</span>
+        </h1>
+
+        <p>
+            Resize, compress and convert your images with a clean,
+            fast and professional photo editing experience.
+            Everything happens directly in your browser.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         APPLICATION
+         ===================================================== -->
+
+    <section class="app">
+
+        <div class="app-top">
+
+            <div class="app-status">
+                <span class="status-dot"></span>
+                Local processing enabled
             </div>
 
-            <!-- Height -->
-            <div class="control-group">
-                <label for="height-input">Height (Pixels)</label>
-                <input type="number" id="height-input">
-            </div>
+            <span style="font-size:12px;color:#64748b;">
+                No upload required
+            </span>
 
-            <!-- Aspect Ratio Lock -->
-            <div class="control-group" style="grid-column: span 2; flex-direction: row; align-items: center; gap: 8px;">
-                <input type="checkbox" id="aspect-ratio" checked>
-                <label for="aspect-ratio" style="margin-bottom: 0; cursor: pointer; font-size: 13px;">Maintain Aspect Ratio (Proportion banaye rakhein)</label>
-            </div>
+        </div>
 
-            <!-- Format -->
-            <div class="control-group">
-                <label for="format-input">Output Format</label>
-                <select id="format-input">
-                    <option value="image/jpeg">JPEG (Best for compression)</option>
-                    <option value="image/png">PNG (No Loss / Clear background)</option>
-                    <option value="image/webp">WebP (Modern & Small size)</option>
-                </select>
-            </div>
 
-            <!-- Quality/Compression with Live KB -->
-            <div class="control-group quality-wrapper">
-                <label for="quality-input">File Size Adjust (Ghatayein/Badhayein)</label>
-                <div class="quality-slider">
-                    <input type="range" id="quality-input" min="5" max="100" value="80">
-                    <span id="quality-val">~ 0 KB</span>
+        <!-- =================================================
+             UPLOAD SCREEN
+             ================================================= -->
+
+        <div id="uploadScreen">
+
+            <div class="upload-area" id="dropArea">
+
+                <div>
+
+                    <div class="upload-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M12 16V4"/>
+                            <path d="m7 9 5-5 5 5"/>
+                            <path d="M4 20h16"/>
+
+                        </svg>
+
+                    </div>
+
+                    <h2>
+                        Drop your image here
+                    </h2>
+
+                    <p>
+                        or choose an image from your device
+                    </p>
+
+                    <button
+                        class="upload-button"
+                        id="chooseButton"
+                        type="button">
+
+                        Choose Image
+
+                    </button>
+
+                    <div class="file-note">
+                        JPG, PNG, WEBP • Works offline • No server upload
+                    </div>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="action-buttons">
-            <!-- Button 1: Resize & Download Image -->
-            <button class="btn btn-primary" id="download-btn">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                </svg>
-                Resize & Download Image
-            </button>
 
-            <hr>
+        <!-- =================================================
+             EDITOR
+             ================================================= -->
 
-            <!-- Button 2: Convert to PDF -->
-            <button class="btn btn-success" id="pdf-btn">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                </svg>
-                Download as PDF
-            </button>
+        <div class="editor" id="editor">
+
+            <!-- PREVIEW -->
+
+            <div class="preview-panel">
+
+                <div class="panel-title">
+
+                    <h3>Image Preview</h3>
+
+                    <span id="previewDimensions">
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="preview-box">
+
+                    <img
+                        id="previewImage"
+                        alt="Selected image preview">
+
+                    <div
+                        class="preview-placeholder"
+                        id="previewPlaceholder">
+
+                        Your resized image will appear here
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div class="controls">
+
+                <!-- DIMENSIONS -->
+
+                <div class="control-section">
+
+                    <div class="section-heading">
+
+                        <h3>
+                            Dimensions
+                        </h3>
+
+                        <span>
+                            PIXELS
+                        </span>
+
+                    </div>
+
+
+                    <div class="dimension-grid">
+
+                        <div class="field">
+
+                            <label>
+                                Width
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <input
+                                    type="number"
+                                    id="widthInput"
+                                    min="1"
+                                    max="10000">
+
+                                <span class="unit">
+                                    px
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                Height
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <input
+                                    type="number"
+                                    id="heightInput"
+                                    min="1"
+                                    max="10000">
+
+                                <span class="unit">
+                                    px
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ratio-row">
+
+                        <span class="ratio-info">
+                            Lock aspect ratio
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="ratioLock"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRESETS -->
+
+                <div class="control-section">
+
+                    <div class="section-heading">
+
+                        <h3>
+                            Quick Presets
+                        </h3>
+
+                        <span>
+                            ONE TAP
+                        </span>
+
+                    </div>
+
+
+                    <div class="presets">
+
+                        <button class="preset"
+                                data-width="1920"
+                                data-height="1080">
+                            Full HD
+                        </button>
+
+                        <button class="preset"
+                                data-width="1280"
+                                data-height="720">
+                            HD
+                        </button>
+
+                        <button class="preset"
+                                data-width="1080"
+                                data-height="1080">
+                            Instagram
+                        </button>
+
+                        <button class="preset"
+                                data-width="1080"
+                                data-height="1350">
+                            Portrait
+                        </button>
+
+                        <button class="preset"
+                                data-width="1080"
+                                data-height="1920">
+                            Story
+                        </button>
+
+                        <button class="preset"
+                                data-width="1200"
+                                data-height="630">
+                            Facebook
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SCALE -->
+
+                <div class="control-section">
+
+                    <div class="section-heading">
+
+                        <h3>
+                            Scale
+                        </h3>
+
+                        <span id="scaleLabel">
+                            100%
+                        </span>
+
+                    </div>
+
+                    <div class="range-row">
+
+                        <span>
+                            Resize percentage
+                        </span>
+
+                        <span class="range-value"
+                              id="scaleValue">
+                            100%
+                        </span>
+
+                    </div>
+
+                    <input
+                        type="range"
+                        id="scaleRange"
+                        min="10"
+                        max="200"
+                        value="100">
+
+                </div>
+
+
+                <!-- OUTPUT -->
+
+                <div class="control-section">
+
+                    <div class="section-heading">
+
+                        <h3>
+                            Output
+                        </h3>
+
+                        <span>
+                            EXPORT
+                        </span>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Format
+                        </label>
+
+                        <select id="formatSelect">
+
+                            <option value="image/jpeg">
+                                JPG
+                            </option>
+
+                            <option value="image/png">
+                                PNG
+                            </option>
+
+                            <option value="image/webp">
+                                WebP
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div
+                        style="height:15px;">
+                    </div>
+
+
+                    <div id="qualityContainer">
+
+                        <div class="range-row">
+
+                            <span>
+                                Image quality
+                            </span>
+
+                            <span
+                                class="range-value"
+                                id="qualityValue">
+                                90%
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="range"
+                            id="qualityRange"
+                            min="10"
+                            max="100"
+                            value="90">
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="control-section">
+
+                    <div class="section-heading">
+
+                        <h3>
+                            Image Information
+                        </h3>
+
+                    </div>
+
+
+                    <div class="stats">
+
+                        <div class="stat">
+
+                            <div class="stat-label">
+                                ORIGINAL
+                            </div>
+
+                            <div
+                                class="stat-value"
+                                id="originalSize">
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <div class="stat-label">
+                                OUTPUT
+                            </div>
+
+                            <div
+                                class="stat-value"
+                                id="outputSize">
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <div class="stat-label">
+                                DIMENSIONS
+                            </div>
+
+                            <div
+                                class="stat-value"
+                                id="dimensionStat">
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <div class="stat-label">
+                                SAVING
+                            </div>
+
+                            <div
+                                class="stat-value"
+                                id="savingStat">
+                                —
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-danger"
+                        id="resetButton"
+                        type="button">
+
+                        Remove
+
+                    </button>
+
+                    <button
+                        class="btn btn-primary"
+                        id="downloadButton"
+                        type="button">
+
+                        Download Image
+
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <button class="btn btn-secondary" onclick="resetPage()">Doosri Photo Upload Karein</button>
-    </div>
+    </section>
+
+
+    <!-- =====================================================
+         FEATURES
+         ===================================================== -->
+
+    <section class="features">
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                ⚡
+            </div>
+
+            <h3>
+                Lightning Fast
+            </h3>
+
+            <p>
+                Your browser processes the image locally,
+                making resizing quick without waiting for
+                server uploads.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔒
+            </div>
+
+            <h3>
+                Private by Design
+            </h3>
+
+            <p>
+                Images are processed locally in your browser.
+                The application does not need to send your
+                photo to a remote server.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                ✨
+            </div>
+
+            <h3>
+                Professional Output
+            </h3>
+
+            <p>
+                Choose your dimensions, format and quality
+                before exporting your resized image.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <footer class="footer">
+
+        PixelResize © 2026 · Fast · Private · Simple
+
+    </footer>
+
+</main>
+
+
+<!-- =========================================================
+     TOAST
+     ========================================================= -->
+
+<div
+    class="toast"
+    id="toast">
+    Done
 </div>
 
+
+<!-- =========================================================
+     LOADER
+     ========================================================= -->
+
+<div
+    class="loader"
+    id="loader">
+
+    <div class="loader-card">
+
+        <div class="spinner"></div>
+
+        <div>
+            Processing image...
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
 <script>
-    const fileInput = document.getElementById('file-input');
-    const dropZone = document.getElementById('drop-zone');
-    const editorSection = document.getElementById('editor-section');
-    const previewImg = document.getElementById('preview-img');
-    const originalInfo = document.getElementById('original-info');
-    
-    const widthInput = document.getElementById('width-input');
-    const heightInput = document.getElementById('height-input');
-    const aspectRatioLock = document.getElementById('aspect-ratio');
-    const formatInput = document.getElementById('format-input');
-    const qualityInput = document.getElementById('quality-input');
-    const qualityVal = document.getElementById('quality-val');
-    const downloadBtn = document.getElementById('download-btn');
-    const pdfBtn = document.getElementById('pdf-btn');
 
-    let originalImage = new Image();
-    let originalAspectRatio = 1;
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
-    // Handle File Upload
-    fileInput.addEventListener('change', handleFile);
-    
-    // Drag & Drop events
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#4f46e5'; });
-    dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = '#cbd5e1'; });
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        fileInput.files = e.dataTransfer.files;
-        handleFile();
+const fileInput =
+    document.getElementById("fileInput");
+
+const dropArea =
+    document.getElementById("dropArea");
+
+const chooseButton =
+    document.getElementById("chooseButton");
+
+const uploadScreen =
+    document.getElementById("uploadScreen");
+
+const editor =
+    document.getElementById("editor");
+
+const previewImage =
+    document.getElementById("previewImage");
+
+const previewPlaceholder =
+    document.getElementById("previewPlaceholder");
+
+const previewDimensions =
+    document.getElementById("previewDimensions");
+
+const widthInput =
+    document.getElementById("widthInput");
+
+const heightInput =
+    document.getElementById("heightInput");
+
+const ratioLock =
+    document.getElementById("ratioLock");
+
+const scaleRange =
+    document.getElementById("scaleRange");
+
+const scaleValue =
+    document.getElementById("scaleValue");
+
+const scaleLabel =
+    document.getElementById("scaleLabel");
+
+const qualityRange =
+    document.getElementById("qualityRange");
+
+const qualityValue =
+    document.getElementById("qualityValue");
+
+const formatSelect =
+    document.getElementById("formatSelect");
+
+const qualityContainer =
+    document.getElementById("qualityContainer");
+
+const originalSize =
+    document.getElementById("originalSize");
+
+const outputSize =
+    document.getElementById("outputSize");
+
+const dimensionStat =
+    document.getElementById("dimensionStat");
+
+const savingStat =
+    document.getElementById("savingStat");
+
+const resetButton =
+    document.getElementById("resetButton");
+
+const downloadButton =
+    document.getElementById("downloadButton");
+
+const toast =
+    document.getElementById("toast");
+
+const loader =
+    document.getElementById("loader");
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let originalImage = null;
+let originalFile = null;
+
+let originalWidth = 0;
+let originalHeight = 0;
+
+let aspectRatio = 1;
+
+let currentOutputBlob = null;
+
+
+/* =========================================================
+   CREATE HIDDEN FILE INPUT
+   ========================================================= */
+
+const hiddenInput =
+    document.createElement("input");
+
+hiddenInput.type = "file";
+hiddenInput.accept =
+    "image/jpeg,image/png,image/webp,image/gif";
+
+hiddenInput.style.display = "none";
+
+document.body.appendChild(hiddenInput);
+
+
+/* =========================================================
+   CHOOSE IMAGE
+   ========================================================= */
+
+chooseButton.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+    hiddenInput.click();
+
+});
+
+
+dropArea.addEventListener("click", () => {
+
+    hiddenInput.click();
+
+});
+
+
+hiddenInput.addEventListener("change", (event) => {
+
+    const file =
+        event.target.files[0];
+
+    if (file) {
+
+        loadImage(file);
+
+    }
+
+});
+
+
+/* =========================================================
+   DRAG & DROP
+   ========================================================= */
+
+dropArea.addEventListener("dragover", (event) => {
+
+    event.preventDefault();
+
+    dropArea.classList.add("dragover");
+
+});
+
+
+dropArea.addEventListener("dragleave", () => {
+
+    dropArea.classList.remove("dragover");
+
+});
+
+
+dropArea.addEventListener("drop", (event) => {
+
+    event.preventDefault();
+
+    dropArea.classList.remove("dragover");
+
+    const file =
+        event.dataTransfer.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+
+        showToast("Please choose an image file.");
+
+        return;
+
+    }
+
+    loadImage(file);
+
+});
+
+
+/* =========================================================
+   LOAD IMAGE
+   ========================================================= */
+
+function loadImage(file) {
+
+    if (!file.type.startsWith("image/")) {
+
+        showToast("Invalid image file.");
+
+        return;
+
+    }
+
+    originalFile = file;
+
+    const url =
+        URL.createObjectURL(file);
+
+    const img =
+        new Image();
+
+    img.onload = () => {
+
+        originalImage = img;
+
+        originalWidth = img.naturalWidth;
+
+        originalHeight = img.naturalHeight;
+
+        aspectRatio =
+            originalWidth / originalHeight;
+
+        widthInput.value =
+            originalWidth;
+
+        heightInput.value =
+            originalHeight;
+
+        scaleRange.value = 100;
+
+        scaleValue.textContent = "100%";
+
+        scaleLabel.textContent = "100%";
+
+        originalSize.textContent =
+            formatBytes(file.size);
+
+        previewDimensions.textContent =
+            `${originalWidth} × ${originalHeight}`;
+
+        uploadScreen.style.display = "none";
+
+        editor.style.display = "grid";
+
+        previewImage.src = url;
+
+        previewImage.style.display = "block";
+
+        previewPlaceholder.style.display = "none";
+
+        generatePreview();
+
+        showToast("Image loaded successfully.");
+
+    };
+
+    img.onerror = () => {
+
+        showToast("Unable to load this image.");
+
+    };
+
+    img.src = url;
+
+}
+
+
+/* =========================================================
+   WIDTH CHANGE
+   ========================================================= */
+
+widthInput.addEventListener("input", () => {
+
+    let width =
+        parseInt(widthInput.value);
+
+    if (!width || width < 1) return;
+
+    if (ratioLock.checked) {
+
+        const height =
+            Math.round(width / aspectRatio);
+
+        heightInput.value =
+            height;
+
+    }
+
+    updateScaleFromDimensions();
+
+    generatePreview();
+
+});
+
+
+/* =========================================================
+   HEIGHT CHANGE
+   ========================================================= */
+
+heightInput.addEventListener("input", () => {
+
+    let height =
+        parseInt(heightInput.value);
+
+    if (!height || height < 1) return;
+
+    if (ratioLock.checked) {
+
+        const width =
+            Math.round(height * aspectRatio);
+
+        widthInput.value =
+            width;
+
+    }
+
+    updateScaleFromDimensions();
+
+    generatePreview();
+
+});
+
+
+/* =========================================================
+   SCALE
+   ========================================================= */
+
+scaleRange.addEventListener("input", () => {
+
+    const scale =
+        Number(scaleRange.value);
+
+    scaleValue.textContent =
+        scale + "%";
+
+    scaleLabel.textContent =
+        scale + "%";
+
+    const width =
+        Math.max(
+            1,
+            Math.round(originalWidth * scale / 100)
+        );
+
+    const height =
+        Math.max(
+            1,
+            Math.round(originalHeight * scale / 100)
+        );
+
+    widthInput.value =
+        width;
+
+    heightInput.value =
+        height;
+
+    generatePreview();
+
+});
+
+
+function updateScaleFromDimensions() {
+
+    if (!originalWidth) return;
+
+    const width =
+        parseInt(widthInput.value) || originalWidth;
+
+    const scale =
+        Math.round(
+            (width / originalWidth) * 100
+        );
+
+    const safeScale =
+        Math.min(
+            200,
+            Math.max(10, scale)
+        );
+
+    scaleRange.value =
+        safeScale;
+
+    scaleValue.textContent =
+        scale + "%";
+
+    scaleLabel.textContent =
+        scale + "%";
+
+}
+
+
+/* =========================================================
+   PRESETS
+   ========================================================= */
+
+document.querySelectorAll(".preset")
+.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const width =
+            Number(button.dataset.width);
+
+        const height =
+            Number(button.dataset.height);
+
+        widthInput.value =
+            width;
+
+        heightInput.value =
+            height;
+
+        ratioLock.checked = false;
+
+        updateScaleFromDimensions();
+
+        generatePreview();
+
+        showToast(
+            `${width} × ${height} preset applied`
+        );
+
     });
 
-    function handleFile() {
-        const file = fileInput.files[0];
-        if (!file) return;
+});
 
-        const sizeKB = (file.size / 1024).toFixed(1);
-        originalInfo.innerText = `Original Size: ${sizeKB} KB`;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            originalImage.src = e.target.result;
-            originalImage.onload = function() {
-                previewImg.src = originalImage.src;
-                
-                widthInput.value = originalImage.width;
-                heightInput.value = originalImage.height;
-                originalAspectRatio = originalImage.width / originalImage.height;
+/* =========================================================
+   FORMAT
+   ========================================================= */
 
-                dropZone.style.display = 'none';
-                editorSection.style.display = 'block';
+formatSelect.addEventListener("change", () => {
 
-                updateEstimatedSize();
+    const format =
+        formatSelect.value;
+
+    if (format === "image/png") {
+
+        qualityContainer.style.opacity =
+            ".45";
+
+        qualityRange.disabled = true;
+
+    } else {
+
+        qualityContainer.style.opacity =
+            "1";
+
+        qualityRange.disabled = false;
+
+    }
+
+    generatePreview();
+
+});
+
+
+/* =========================================================
+   QUALITY
+   ========================================================= */
+
+qualityRange.addEventListener("input", () => {
+
+    qualityValue.textContent =
+        qualityRange.value + "%";
+
+    generatePreview();
+
+});
+
+
+/* =========================================================
+   GENERATE PREVIEW
+   ========================================================= */
+
+let previewTimer = null;
+
+function generatePreview() {
+
+    if (!originalImage) return;
+
+    clearTimeout(previewTimer);
+
+    previewTimer =
+        setTimeout(() => {
+
+            processImage(false);
+
+        }, 150);
+
+}
+
+
+/* =========================================================
+   PROCESS IMAGE
+   ========================================================= */
+
+function processImage(download = false) {
+
+    if (!originalImage) return;
+
+    const width =
+        Math.max(
+            1,
+            parseInt(widthInput.value) || originalWidth
+        );
+
+    const height =
+        Math.max(
+            1,
+            parseInt(heightInput.value) || originalHeight
+        );
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width = width;
+
+    canvas.height = height;
+
+    const ctx =
+        canvas.getContext("2d", {
+            alpha: true
+        });
+
+    ctx.imageSmoothingEnabled = true;
+
+    ctx.imageSmoothingQuality = "high";
+
+    const format =
+        formatSelect.value;
+
+    /*
+       For JPG, use a white background because JPEG
+       does not support transparency.
+    */
+
+    if (format === "image/jpeg") {
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+    }
+
+    ctx.drawImage(
+        originalImage,
+        0,
+        0,
+        width,
+        height
+    );
+
+    const quality =
+        Number(qualityRange.value) / 100;
+
+    canvas.toBlob(
+        (blob) => {
+
+            if (!blob) {
+
+                showToast(
+                    "Unable to process image."
+                );
+
+                return;
+
             }
-        }
-        reader.readAsDataURL(file);
+
+            currentOutputBlob =
+                blob;
+
+            outputSize.textContent =
+                formatBytes(blob.size);
+
+            dimensionStat.textContent =
+                `${width} × ${height}`;
+
+            const saving =
+                ((originalFile.size - blob.size)
+                / originalFile.size) * 100;
+
+            if (saving >= 0) {
+
+                savingStat.textContent =
+                    `${saving.toFixed(1)}% smaller`;
+
+            } else {
+
+                savingStat.textContent =
+                    `${Math.abs(saving).toFixed(1)}% larger`;
+
+            }
+
+            previewDimensions.textContent =
+                `${width} × ${height}`;
+
+            /*
+               Update visible preview.
+            */
+
+            if (!download) {
+
+                const previewURL =
+                    URL.createObjectURL(blob);
+
+                previewImage.onload = () => {
+
+                    URL.revokeObjectURL(previewURL);
+
+                };
+
+                previewImage.src =
+                    previewURL;
+
+                previewImage.style.display =
+                    "block";
+
+                previewPlaceholder.style.display =
+                    "none";
+
+            }
+
+            if (download) {
+
+                saveBlob(blob);
+
+            }
+
+        },
+        format,
+        quality
+    );
+
+}
+
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+downloadButton.addEventListener("click", () => {
+
+    if (!originalImage) {
+
+        showToast(
+            "Please choose an image first."
+        );
+
+        return;
+
     }
 
-    // Aspect ratio locking
-    widthInput.addEventListener('input', () => {
-        if (aspectRatioLock.checked) {
-            heightInput.value = Math.round(widthInput.value / originalAspectRatio);
-        }
-        updateEstimatedSize();
-    });
+    loader.classList.add("active");
 
-    heightInput.addEventListener('input', () => {
-        if (aspectRatioLock.checked) {
-            widthInput.value = Math.round(heightInput.value * originalAspectRatio);
-        }
-        updateEstimatedSize();
-    });
+    setTimeout(() => {
 
-    formatInput.addEventListener('change', updateEstimatedSize);
-    qualityInput.addEventListener('input', updateEstimatedSize);
+        processImage(true);
 
-    // Live KB Size Calculator
-    function updateEstimatedSize() {
-        if (!originalImage.src) return;
+        setTimeout(() => {
 
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+            loader.classList.remove("active");
 
-        const targetWidth = parseInt(widthInput.value) || originalImage.width;
-        const targetHeight = parseInt(heightInput.value) || originalImage.height;
+        }, 250);
 
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
+    }, 50);
 
-        ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
+});
 
-        const quality = parseInt(qualityInput.value) / 100;
-        const format = formatInput.value;
 
-        const outputDataUrl = canvas.toDataURL(format, quality);
-        
-        const head = outputDataUrl.split(',')[0];
-        let sizeInBytes = Math.round((outputDataUrl.length - head.length - 1) * 3 / 4);
-        
-        if (outputDataUrl.endsWith('==')) sizeInBytes -= 2;
-        else if (outputDataUrl.endsWith('=')) sizeInBytes -= 1;
+/* =========================================================
+   SAVE BLOB
+   ========================================================= */
 
-        const sizeInKB = (sizeInBytes / 1024).toFixed(1);
-        qualityVal.innerText = `~ ${sizeInKB} KB`;
+function saveBlob(blob) {
+
+    let extension = "jpg";
+
+    if (formatSelect.value === "image/png") {
+
+        extension = "png";
+
     }
 
-    // Helper to generate processed image data URL
-    function getProcessedImageData() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+    if (formatSelect.value === "image/webp") {
 
-        const targetWidth = parseInt(widthInput.value) || originalImage.width;
-        const targetHeight = parseInt(heightInput.value) || originalImage.height;
+        extension = "webp";
 
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
-
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
-
-        const quality = parseInt(qualityInput.value) / 100;
-        const format = formatInput.value;
-
-        return {
-            dataUrl: canvas.toDataURL(format, quality),
-            format: format
-        };
     }
 
-    // Resize and Download Image Button
-    downloadBtn.addEventListener('click', () => {
-        const { dataUrl, format } = getProcessedImageData();
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        
-        const originalName = fileInput.files[0].name.split('.').slice(0, -1).join('.');
-        const extension = format === 'image/webp' ? 'webp' : (format === 'image/png' ? 'png' : 'jpg');
-        link.download = `${originalName}_resized.${extension}`;
-        
-        link.click();
-    });
+    const filename =
+        "pixelresize-" +
+        widthInput.value +
+        "x" +
+        heightInput.value +
+        "." +
+        extension;
 
-    // Convert Image to PDF Button
-    pdfBtn.addEventListener('click', () => {
-        const { dataUrl } = getProcessedImageData();
-        const { jsPDF } = window.jspdf;
+    const url =
+        URL.createObjectURL(blob);
 
-        // Create PDF (Portrait, unit: millimeters, size: A4)
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
+    const a =
+        document.createElement("a");
 
-        // Target measurements for canvas image
-        const targetWidth = parseInt(widthInput.value) || originalImage.width;
-        const targetHeight = parseInt(heightInput.value) || originalImage.height;
-        const imgRatio = targetWidth / targetHeight;
+    a.href = url;
 
-        // Image ko A4 size page me perfect fit karne ki calculation
-        let pdfImgWidth = pageWidth - 20; // 10mm margins on sides
-        let pdfImgHeight = pdfImgWidth / imgRatio;
+    a.download = filename;
 
-        // Agar image page se lambi ho jaye
-        if (pdfImgHeight > (pageHeight - 20)) {
-            pdfImgHeight = pageHeight - 20;
-            pdfImgWidth = pdfImgHeight * imgRatio;
-        }
+    document.body.appendChild(a);
 
-        // Center alignment calculations
-        const xOffset = (pageWidth - pdfImgWidth) / 2;
-        const yOffset = (pageHeight - pdfImgHeight) / 2;
+    a.click();
 
-        // PDF me image add karein
-        pdf.addImage(dataUrl, 'JPEG', xOffset, yOffset, pdfImgWidth, pdfImgHeight);
-        
-        // Download PDF file
-        const originalName = fileInput.files[0].name.split('.').slice(0, -1).join('.');
-        pdf.save(`${originalName}_document.pdf`);
-    });
+    a.remove();
 
-    // Reset Page for next upload
-    function resetPage() {
-        fileInput.value = '';
-        dropZone.style.display = 'block';
-        editorSection.style.display = 'none';
-        dropZone.style.borderColor = '#cbd5e1';
+    setTimeout(() => {
+
+        URL.revokeObjectURL(url);
+
+    }, 1000);
+
+    showToast(
+        "Image downloaded successfully."
+    );
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+resetButton.addEventListener("click", () => {
+
+    originalImage = null;
+
+    originalFile = null;
+
+    currentOutputBlob = null;
+
+    widthInput.value = "";
+
+    heightInput.value = "";
+
+    outputSize.textContent = "—";
+
+    originalSize.textContent = "—";
+
+    dimensionStat.textContent = "—";
+
+    savingStat.textContent = "—";
+
+    previewDimensions.textContent = "—";
+
+    previewImage.src = "";
+
+    previewImage.style.display = "none";
+
+    previewPlaceholder.style.display = "block";
+
+    editor.style.display = "none";
+
+    uploadScreen.style.display = "block";
+
+    hiddenInput.value = "";
+
+    showToast(
+        "Image removed."
+    );
+
+});
+
+
+/* =========================================================
+   FORMAT BYTES
+   ========================================================= */
+
+function formatBytes(bytes) {
+
+    if (!bytes || bytes === 0) {
+
+        return "0 B";
+
     }
+
+    const units = [
+        "B",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+    const index =
+        Math.floor(
+            Math.log(bytes) / Math.log(1024)
+        );
+
+    const safeIndex =
+        Math.min(
+            index,
+            units.length - 1
+        );
+
+    return (
+        bytes /
+        Math.pow(1024, safeIndex)
+    ).toFixed(
+        safeIndex === 0 ? 0 : 2
+    ) + " " +
+    units[safeIndex];
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer = null;
+
+function showToast(message) {
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2500);
+
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUT
+   ========================================================= */
+
+document.addEventListener("keydown", (event) => {
+
+    /*
+       Ctrl/Cmd + O = open image
+    */
+
+    if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === "o"
+    ) {
+
+        event.preventDefault();
+
+        hiddenInput.click();
+
+    }
+
+});
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+qualityValue.textContent =
+    qualityRange.value + "%";
+
 </script>
 
 </body>
